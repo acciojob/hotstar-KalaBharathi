@@ -39,11 +39,28 @@ public class UserService {
 
         int count=0;
         SubscriptionType subscriptionType=subscription.getSubscriptionType();
-        for(WebSeries webSeries:webSeriesList){
-            if(webSeries.getSubscriptionType().equals(subscriptionType) && webSeries.getAgeLimit()<user.getAge()){
-                count++;
+        if(subscriptionType.equals(SubscriptionType.BASIC)) {
+            for (WebSeries webSeries : webSeriesList) {
+                if (webSeries.getSubscriptionType().equals(subscriptionType) && webSeries.getAgeLimit() < user.getAge()) {
+                    count++;
+                }
             }
         }
+        if(subscriptionType.equals(SubscriptionType.PRO)) {
+            for (WebSeries webSeries : webSeriesList) {
+                if ((webSeries.getSubscriptionType().equals(subscriptionType) || webSeries.getSubscriptionType().equals("BASIC")) && webSeries.getAgeLimit() < user.getAge()) {
+                    count++;
+                }
+            }
+        }
+        if(subscriptionType.equals(SubscriptionType.ELITE)) {
+            for (WebSeries webSeries : webSeriesList) {
+                if (webSeries.getAgeLimit() < user.getAge()) {
+                    count++;
+                }
+            }
+        }
+
 
 
         return count;

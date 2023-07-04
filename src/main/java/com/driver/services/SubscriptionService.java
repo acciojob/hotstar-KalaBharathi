@@ -62,20 +62,30 @@ public class SubscriptionService {
         int diff=0;
         Subscription subscription=user.getSubscription();
         if(subscription.getSubscriptionType().equals(SubscriptionType.BASIC)){
+            int screens = subscription.getNoOfScreensSubscribed();
+
+            int tc = 800 + 250*screens;
+            diff= tc - subscription.getTotalAmountPaid();
             subscription.setSubscriptionType(SubscriptionType.PRO);
-            int total=800 + 250*(subscription.getNoOfScreensSubscribed());
-            diff=total-subscription.getTotalAmountPaid();
-            subscription.setTotalAmountPaid(total);
+            subscription.setTotalAmountPaid(tc);
+
+            user.setSubscription(subscription);
+            subscriptionRepository.save(subscription);
+            userRepository.save(user);
         }
         if(subscription.getSubscriptionType().equals(SubscriptionType.PRO)){
+            int screens = subscription.getNoOfScreensSubscribed();
+
+            int tc = 1000 + 350*screens;
+            diff = tc - subscription.getTotalAmountPaid();
             subscription.setSubscriptionType(SubscriptionType.ELITE);
-            int total=1000 + 300*(subscription.getNoOfScreensSubscribed());
-            diff=total-subscription.getTotalAmountPaid();
-            subscription.setTotalAmountPaid(total);
+            subscription.setTotalAmountPaid(tc);
+
+            user.setSubscription(subscription);
+            subscriptionRepository.save(subscription);
+            userRepository.save(user);
         }
-        user.setSubscription(subscription);
-        subscriptionRepository.save(subscription);
-        userRepository.save(user);
+
 
         return diff;
     }
